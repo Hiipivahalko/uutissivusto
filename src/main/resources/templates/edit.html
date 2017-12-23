@@ -1,0 +1,40 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        
+        <nav>
+            <a th:href="@{/frontpage}">Back to frontpage</a>
+            <a th:href="@{/article/{id}(id=${article.id})}">Cancel</a>
+        </nav>
+        
+        <form th:action="@{/edit/{id}(id=${article.id})}" method="POST">
+            <table>
+                <tr>
+                    <td>Headline: </td>
+                    <td><input th:type="text" th:name="headline" th:value="${article.headline}"/></td>
+                </tr>
+                <tr>
+                    <td>Lead: </td>
+                    <td><input th:type="text" th:name="lead" th:value="${article.lead}"/></td>
+                </tr>
+                <tr>
+                    <td>Text: </td>
+                    <td><input th:type="text" th:name="text" th:value="${article.text}"/></td>
+                </tr>
+                <tr>
+                    <td><button th:type="submit">Submit</button></td>
+                </tr>
+                
+            </table>
+        </form>
+        
+        <form th:action="@{/deleteArticle/{id}(id=${article.id})}" th:method="DELETE">
+            <button th:type="submit">Delete article</button>
+        </form>
+        
+    </body>
+</html>

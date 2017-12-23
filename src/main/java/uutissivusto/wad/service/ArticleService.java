@@ -22,4 +22,18 @@ public class ArticleService {
         
         articleRepository.save(article);
     }
+    
+    public void delete(Long id) {
+        Article article = articleRepository.getOne(id);
+        articleRepository.delete(article);
+    }
+    
+    public void edit(Long id, String headline, String lead, String text) {
+        Article article = articleRepository.getOne(id);
+        
+        article.setHeadline(headline);
+        article.setLead(lead);
+        article.setText(text);
+        articleRepository.save(article);
+    }
 }

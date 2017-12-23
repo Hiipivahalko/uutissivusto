@@ -14,5 +14,9 @@
         
         <p th:text="${article.text}">text</p>
         
+        
+        
+        <a th:href="@{/edit/{id}(id=${article.id})}"><button>Edit</button></a>
+        
     </body>
 </html>
