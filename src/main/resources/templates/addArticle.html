@@ -5,6 +5,9 @@
         <meta charset="UTF-8"/>
     </head>
     <body>
+        <nav>
+            <a th:href="@{/frontpage}">Back to frontpage</a>
+        </nav>
         
         <form action="#" th:action="@{/addArticle}" th:object="${postObject}" method="POST">
             <table>

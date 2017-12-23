@@ -9,6 +9,16 @@
         
         <h1>Viialansanomat</h1>
         
+        <p>Welcome!</p>
+        
+        <ul>
+            <li th:each="article : ${articles}">
+                <a th:href="@{/article/{id}(id=${article.id})}">
+                    <h4 th:text="${article.headline}"> headline </h4>
+                    <p th:text="${article.lead}"> lead </p>
+                </a>
+            </li>
+        </ul>
         
         <a th:href="@{/addArticle}">Add new article</a>
         

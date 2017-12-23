@@ -8,21 +8,26 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import uutissivusto.wad.domain.Article;
 import uutissivusto.wad.domain.PostObject;
 import uutissivusto.wad.repository.ArticleRepository;
+import uutissivusto.wad.service.ArticleService;
 
 @Controller
 public class ArticleController {
     
     @Autowired
-    private ArticleRepository ArticleRepository;
+    private ArticleRepository articleRepository;
+    
+    @Autowired
+    private ArticleService articleService;
     
     @GetMapping("/frontpage")
     public String frontpage(Model model) {
         
-        model.addAttribute("articles", ArticleRepository.findAll());
+        model.addAttribute("articles", articleRepository.findAll());
         
         return "frontpage";
     }
@@ -40,15 +45,17 @@ public class ArticleController {
             return "frontpage";
         }
         
-        Article article = new Article();
-        article.setHeadline(postObject.getHeadline());
-        article.setLead(postObject.getLead());
-        article.setText(postObject.getText());
-        
-        ArticleRepository.save(article);
-        
+        articleService.createArticle(postObject);
         
         return "redirect:/frontpage";
+    }
+    
+    @GetMapping("/article/{id}")
+    public String article(Model model, @PathVariable Long id) {
+        
+        model.addAttribute("article", articleRepository.getOne(id));
+        
+        return "article";
     }
     
 }
