@@ -9,6 +9,14 @@
         
         <h1>Viialansanomat</h1>
         
+        <a th:each="category : ${categories}" th:href="@{/category/{id}(id=${category.id})}"  th:text="${category.name}"><span>htht</span></a>
+        
+        <form th:action="@{/addCategoryToFrontpage}" method="POST">
+            <input th:type="text" th:name="name"/>
+            <input th:type="submit" value="Add Category"/>
+        </form>
+       
+        
         <p>Welcome!</p>
         
         <ul>

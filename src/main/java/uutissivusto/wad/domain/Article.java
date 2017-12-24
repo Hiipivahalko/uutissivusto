@@ -1,6 +1,7 @@
 
 package uutissivusto.wad.domain;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -25,10 +26,18 @@ public class Article extends AbstractPersistable<Long> {
     @NotEmpty
     private String text;
     
+    private LocalDateTime date;
+    
+    private int views = 0;
+    
     @OneToOne
     private FileObject fileObject;
     
     @ManyToMany
     private List<Writer> writers;
+    
+    @ManyToMany
+    private List<Category> categories;
+    
     
 }
