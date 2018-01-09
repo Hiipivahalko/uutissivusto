@@ -2,9 +2,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>VIIALANSANOMAT</title>
+
         <meta charset="UTF-8"/>
     </head>
     <body>
+        
+        <h1 th:text="${category.name}">category</h1>
+        
+        <ul>
+            <li th:each="article : ${category.articles}">
+                <a th:href="@{/article/{id}(id=${article.id})}">
+                    <h4 th:text="${article.headline}"> headline </h4>
+                    <p th:text="${article.lead}"> lead </p>
+                </a>
+            </li>
+        </ul>
         
     </body>
 </html>

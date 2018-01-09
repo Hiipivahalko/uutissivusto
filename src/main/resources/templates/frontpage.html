@@ -2,33 +2,38 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>VIIALANSANOMAT</title>
-        
+
         <meta charset="UTF-8"/>
     </head>
     <body>
-        
+        <nav>
+            
+            <a th:href="@{/article/new}"><button>Add New Article</button></a>
+        </nav>
+
         <h1>Viialansanomat</h1>
-        
-        <a th:each="category : ${categories}" th:href="@{/category/{id}(id=${category.id})}"  th:text="${category.name}"><span>htht</span></a>
-        
+
+        <a th:each="category : ${categories}" th:href="@{/category/{categoryId}(categoryId=${category.id})}"  th:text="${category.name}"><span>htht</span></a>
+
         <form th:action="@{/addCategoryToFrontpage}" method="POST">
             <input th:type="text" th:name="name"/>
             <input th:type="submit" value="Add Category"/>
         </form>
-       
-        
+
+
         <p>Welcome!</p>
-        
+
         <ul>
             <li th:each="article : ${articles}">
                 <a th:href="@{/article/{id}(id=${article.id})}">
                     <h4 th:text="${article.headline}"> headline </h4>
+                    <img th:src="@{/images/{id}(id=${article.fileObject.id})}" height="300" width="300" alt="image"/>
                     <p th:text="${article.lead}"> lead </p>
                 </a>
             </li>
         </ul>
-        
-        <a th:href="@{/addArticle}">Add new article</a>
-        
+
+
+
     </body>
 </html>

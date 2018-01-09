@@ -2,6 +2,7 @@
 package uutissivusto.wad.domain;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
@@ -17,7 +18,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Entity
 public class FileObject extends AbstractPersistable<Long> {
 
-    @OneToOne(mappedBy = "fileObject")
+    @OneToOne(mappedBy = "fileObject", cascade = {CascadeType.ALL})
     private Article news;
     
     @Lob
@@ -26,6 +27,6 @@ public class FileObject extends AbstractPersistable<Long> {
     private String name;
     private int contentLenght;
     private String contentType;
-    private int size;
+    private Long size;
     
 }

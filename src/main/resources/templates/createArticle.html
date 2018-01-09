@@ -11,23 +11,19 @@
         </nav>
         <h1>Create new article</h1>
         
-        <form th:action="@{/article/edit/{id}(id=${article.id})}" method="POST" enctype="multipart/form-data">
+        <form th:action="@{/article/new}" method="POST" enctype="multipart/form-data">
             <table>
                 <tr>
                     <td>Headline: </td>
-                    <td><input th:type="text" name="headline" th:value="${article.headline}" /></td>
+                    <td><textarea cols="75" rows="1" name="headline"></textarea></td>
                 </tr>
                 <tr>
                     <td>Lead: </td>
-                    <td><input th:type="text" name="lead" th:value="${article.lead}" /></td>
+                    <td><textarea cols="75" rows="5" name="lead"></textarea></td>
                 </tr>
                 <tr>
                     <td>Text: </td>
-                    <td><input th:type="text" name="text" th:value="${article.text}" /></td>
-                </tr>
-                <tr>
-                    <td>Current category: </td>
-                    <td><p th:text="${article.category.name}">current categroy</p></td>
+                    <td><textarea cols="75" rows="30" name="text"></textarea></td>
                 </tr>
                 <tr>
                     <td>Category: </td>
@@ -41,21 +37,15 @@
                 </tr>
                 <tr>
                     <td>Writer: </td>
-                    <td><input th:type="text" name="writer" th:value="${article.writer}"/></td>
+                    <td><input th:type="text" name="writer" /></td>
                 </tr>
                 <tr>
                     <td>Image: </td>
-                    <td><img th:src="@{/images/{id}(id=${article.fileObject.id})}" height="300" width="300" alt="image"/></td>
                     <td><input th:type="file" name="file" /></td>
                 </tr>
-                
             </table>
             
-            <button th:type="submit">Edit</button>
-        </form>
-        
-        <form th:action="@{/article/delete/{id}(id=${article.id})}" th:method="DELETE">
-            <button th:type="submit">DELETE</button>
+            <button th:type="submit">publish</button>
         </form>
         
     </body>

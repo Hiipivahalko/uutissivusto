@@ -1,103 +1,111 @@
 package uutissivusto.wad.controller;
 
-import javax.validation.Valid;
+import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import uutissivusto.wad.domain.Article;
-import uutissivusto.wad.domain.PostObject;
-import uutissivusto.wad.repository.ArticleRepository;
-import uutissivusto.wad.repository.CategoryRepository;
 import uutissivusto.wad.service.ArticleService;
+import uutissivusto.wad.service.CategoryService;
+import uutissivusto.wad.service.FileObjectService;
 
 @Controller
 public class ArticleController {
 
     @Autowired
-    private ArticleRepository articleRepository;
+    private ArticleService articleService;
 
     @Autowired
-    private ArticleService articleService;
-    
+    private CategoryService categoryService;
+
+
     @Autowired
-    private CategoryRepository categoryRepository;
-    
+    private FileObjectService fileObjectService;
+
     //Show frontpage
     @GetMapping("/frontpage")
     public String frontpage(Model model) {
-        
-        model.addAttribute("articles", articleRepository.findAll());
-        model.addAttribute("categories", categoryRepository.findAll());
-        
+
+        model.addAttribute("articles", articleService.findAll());
+        model.addAttribute("categories", categoryService.findAll());
+
         return "frontpage";
     }
 
-    //add new article
-    @GetMapping("/addArticle")
-    public String addArticle(@ModelAttribute PostObject postObject) {
+    @GetMapping("/article/new")
+    public String newArticle(Model model) {
 
-        return "addArticle";
+        model.addAttribute("categories", categoryService.findAll());
+
+        return "createArticle";
     }
 
-    //post method for adding
-    @PostMapping("/addArticle")
-    public String postArticle(@Valid @ModelAttribute PostObject postObject, BindingResult bindingResult) {
+    @PostMapping("/article/new")
+    public String createArticle(@RequestParam String headline, @RequestParam String lead, @RequestParam String text,
+            @RequestParam Long categoryId, @RequestParam String writer, @RequestParam("file") MultipartFile file) throws IOException {
 
-        if (bindingResult.hasErrors()) {
-            return "frontpage";
+        if (file.getContentType().equals("image/png")) {
+            Article article = new Article();
+            article = articleService.createArticle(headline, lead, text, writer);
+            categoryService.addCategoryToArticle(article.getId(), categoryId);
+            fileObjectService.save(file, article);
         }
 
-        articleService.createArticle(postObject);
-
+        //writerService.addWriter(article, writer);
         return "redirect:/frontpage";
     }
 
-    //show article
     @GetMapping("/article/{id}")
     public String article(Model model, @PathVariable Long id) {
 
-        model.addAttribute("article", articleRepository.getOne(id));
+        model.addAttribute("article", articleService.getOne(id));
 
         return "article";
     }
 
-    //get change to edit article
-    @GetMapping("/edit/{id}")
-    public String edit(Model model, @PathVariable Long id) {
+    @GetMapping("/article/edit/{id}")
+    public String editArticle(Model model, @PathVariable Long id) {
 
-        model.addAttribute("article", articleRepository.getOne(id));
+        Article article = articleService.getOne(id);
+        model.addAttribute("article", article);
+        model.addAttribute("categories", categoryService.findAll());
 
         return "edit";
     }
 
-    //do the editing
-    @PostMapping("/edit/{id}")
-    public String editPost(@PathVariable Long id, @RequestParam String headline,
-            @RequestParam String lead, @RequestParam String text) {
+    @PostMapping("/article/edit/{id}")
+    public String postEdit(@PathVariable Long id, @RequestParam String headline, @RequestParam String lead, @RequestParam String text,
+            @RequestParam String writer, @RequestParam("file") MultipartFile file, @RequestParam Long categoryId) throws IOException {
 
-        articleService.edit(id, headline, lead, text);
+        Article article = articleService.getOne(id);
+        articleService.edit(article, headline, lead, text, writer);
+        if (file != null && file.getContentType().equals("image/png")) {
+            fileObjectService.updateImage(file, id);
+        }
+
+        categoryService.editCategory(id, categoryId);
 
         return "redirect:/article/" + id;
     }
 
-    //delete article
-    @DeleteMapping("/deleteArticle/{id}")
+    @DeleteMapping("/article/delete/{id}")
     public String deleteArticle(@PathVariable Long id) {
 
-        articleService.delete(id);
+        //ategoryService.deleteArticleFromCategory(id);
+        //fileObjectService.deleteFileObject(articleService.getOne(id).getFileObject());
+        articleService.deleteArticle(id);
 
-        return "redirect:/frontpage";
+        return "redirect:/kokeilu";
     }
-    
-    
-    
-    
 
+    @GetMapping("/kokeilu")
+    public String kokeilu() {
+        return "kokeilu";
+    }
 }
