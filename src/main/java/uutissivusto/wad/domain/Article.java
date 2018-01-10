@@ -40,6 +40,8 @@ public class Article extends AbstractPersistable<Long> {
     @ManyToOne
     private Category category;
     
+
+    
     /*@ManyToOne
     private Writer writer;
     */

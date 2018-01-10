@@ -11,8 +11,8 @@
         </nav>
         <h1>Create new article</h1>
         
-        <form th:action="@{/article/new}" method="POST" enctype="multipart/form-data">
-            <table>
+        <form th:action="@{/article/new}" method="POST" enctype="multipart/form-data" class="form-group" >
+            <table class="table">
                 <tr>
                     <td>Headline: </td>
                     <td><textarea cols="75" rows="1" name="headline"></textarea></td>

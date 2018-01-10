@@ -1,37 +1,74 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.springframework.org/security/tags">
     <head>
         <title>VIIALANSANOMAT</title>
 
-        <meta charset="UTF-8"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     </head>
-    <body>
-        <nav>
-            
-            <a th:href="@{/article/new}"><button>Add New Article</button></a>
+    <body class="container">
+        <nav class="inline">
+            <form method="post" action="#" th:action="@{/logout}">
+                <input type="submit" name="logout" value="Logout"/>
+            </form>
+            <a th:href="@{/getIn}"><button>Login</button></a>
+            <div sec:authorize="hasAuthority('ADMIN')">
+                <a th:href="@{/article/new}"><button>Add New Article</button></a>
+            </div>
+
         </nav>
 
         <h1>Viialansanomat</h1>
 
-        <a th:each="category : ${categories}" th:href="@{/category/{categoryId}(categoryId=${category.id})}"  th:text="${category.name}"><span>htht</span></a>
+        <a th:each="category : ${categories}" th:href="@{/category/{categoryId}(categoryId=${category.id})}" class="btn btn-default"
+           role="button">
+            <span th:text="${category.name}"> name</span>
 
-        <form th:action="@{/addCategoryToFrontpage}" method="POST">
-            <input th:type="text" th:name="name"/>
-            <input th:type="submit" value="Add Category"/>
-        </form>
+        </a>
+
+        <div sec:authorize="hasAuthority('ADMIN')">
+            <form th:action="@{/addCategoryToFrontpage}" method="POST" class="form-group">
+                <input th:type="text" th:name="name"/>
+                <input th:type="submit" value="Add Category"/>
+            </form>
+        </div>
 
 
-        <p>Welcome!</p>
 
-        <ul>
-            <li th:each="article : ${articles}">
-                <a th:href="@{/article/{id}(id=${article.id})}">
-                    <h4 th:text="${article.headline}"> headline </h4>
-                    <img th:src="@{/images/{id}(id=${article.fileObject.id})}" height="300" width="300" alt="image"/>
-                    <p th:text="${article.lead}"> lead </p>
-                </a>
-            </li>
-        </ul>
+        <h3>Welcome!</h3>
+        
+        
+        <h5>Weekly five most viewed article</h5>
+        
+        <div th:if="${viewed != null}">
+            <ul class="list-unstyled">
+                <li th:each="article : ${viewed}">
+                    <a th:href="@{/article/{id}(id=${article.id})}">
+                        <h4 th:text="${article.headline}"> headline </h4>
+                        <img th:src="@{/images/{id}(id=${article.fileObject.id})}" height="300" width="300" alt="image"/>
+                        <p th:text="${article.lead}"> lead </p>
+                    </a>
+                </li>
+            </ul> 
+        </div>
+
+        
+        <h5>Five latest news</h5>
+        
+        <div th:if="${newest != null}">
+            <ul class="list-unstyled">
+                <li th:each="article : ${newest}">
+                    <a th:href="@{/article/{id}(id=${article.id})}">
+                        <h4 th:text="${article.headline}"> headline </h4>
+                        <img th:src="@{/images/{id}(id=${article.fileObject.id})}" height="300" width="300" alt="image"/>
+                        <p th:text="${article.lead}"> lead </p>
+                    </a>
+                </li>
+            </ul>
+        </div>
 
 
 

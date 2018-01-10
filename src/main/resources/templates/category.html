@@ -9,7 +9,7 @@
         
         <h1 th:text="${category.name}">category</h1>
         
-        <ul>
+        <ul class="list-unstyled">
             <li th:each="article : ${category.articles}">
                 <a th:href="@{/article/{id}(id=${article.id})}">
                     <h4 th:text="${article.headline}"> headline </h4>

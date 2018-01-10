@@ -2,6 +2,9 @@ package uutissivusto.wad.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uutissivusto.wad.domain.Article;
@@ -61,5 +64,19 @@ public class ArticleService {
         FileObject second = fileObjectRepository.getOne(article.getFileObject().getId());
         articleRepository.delete(article);
 
+    }
+    
+    public List<Article> mostViewed(int size) {
+        return articleRepository.findAll().stream()
+                .filter(x -> Days.daysBetween(DateTime.parse(x.getDate().toString()), DateTime.now()).getDays() <= 7)
+                .sorted((x, y) -> y.getViews() - x.getViews())
+                .limit(size)
+                .collect((Collectors.toList()));
+    }
+    
+    public void addView(Long id) {
+        Article article = articleRepository.getOne(id);
+        article.setViews(article.getViews() + 1);
+        articleRepository.save(article);
     }
 }

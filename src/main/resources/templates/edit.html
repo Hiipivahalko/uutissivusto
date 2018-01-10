@@ -11,19 +11,19 @@
         </nav>
         <h1>Create new article</h1>
         
-        <form th:action="@{/article/edit/{id}(id=${article.id})}" method="POST" enctype="multipart/form-data">
-            <table>
+        <form th:action="@{/article/edit/{id}(id=${article.id})}" method="POST" enctype="multipart/form-data" class="form-group">
+            <table class="table">
                 <tr>
                     <td>Headline: </td>
-                    <td><input th:type="text" name="headline" th:value="${article.headline}" /></td>
+                    <td><input th:type="text" name="headline" th:value="${article.headline}" class="form-control"/></td>
                 </tr>
                 <tr>
                     <td>Lead: </td>
-                    <td><input th:type="text" name="lead" th:value="${article.lead}" /></td>
+                    <td><input th:type="text" name="lead" th:value="${article.lead}" class="form-control"/></td>
                 </tr>
                 <tr>
                     <td>Text: </td>
-                    <td><input th:type="text" name="text" th:value="${article.text}" /></td>
+                    <td><input th:type="text" name="text" th:value="${article.text}" class="form-control"/></td>
                 </tr>
                 <tr>
                     <td>Current category: </td>
@@ -41,12 +41,12 @@
                 </tr>
                 <tr>
                     <td>Writer: </td>
-                    <td><input th:type="text" name="writer" th:value="${article.writer}"/></td>
+                    <td><input th:type="text" name="writer" th:value="${article.writer}"class="form-control"/></td>
                 </tr>
                 <tr>
                     <td>Image: </td>
                     <td><img th:src="@{/images/{id}(id=${article.fileObject.id})}" height="300" width="300" alt="image"/></td>
-                    <td><input th:type="file" name="file" /></td>
+                    <td><input th:type="file" name="file" class="form-control"/></td>
                 </tr>
                 
             </table>
